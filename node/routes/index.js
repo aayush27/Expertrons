@@ -9,5 +9,4 @@ router.put('/updateMentor', updateMentor);
 router.delete('/deleteMentor', deleteMentor);
 router.post('/addMentorTask', addMentorTask);
 
-
 module.exports = router;

@@ -16,7 +16,7 @@ exports.createMentor = (req, res) => {
 exports.getMentors = (req, res) => {
     getMentors()
         .then((response) => {
-            res.status(200).json({ data: response });
+            res.status(200).send(response);
         })
         .catch((error) => {
             res.status(400).json({ error: error});
@@ -29,7 +29,7 @@ exports.updateMentor = (req, res) => {
     }
     updateMentor(req.body.id, params)
         .then((response) => {
-            res.status(200).json({ data: response });
+            res.status(200).send(response);
         })
         .catch((error) => {
             res.status(400).json({ error: error});
@@ -40,7 +40,7 @@ exports.deleteMentor = (req, res) => {
     const id = req.query.id;
     deleteMentor(id)
         .then((response) => {
-            res.status(200).json({ data: response });
+            res.status(200).send(response);
         })
         .catch((error) => {
             res.status(400).json({ error: error});
@@ -54,7 +54,7 @@ exports.addMentorTask = (req, res) => {
     };
     addMentorTask(params)
         .then((response) => {
-            res.status(200).json({ data: response });
+            res.status(200).send(response);
         })
         .catch((error) => {
             res.status(400).json({ error: error});

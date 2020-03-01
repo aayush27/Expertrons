@@ -1,5 +1,6 @@
 const db = require('../models/index');
 const _ = require('underscore');
+const async = require('async');
 const Mentor = db.Mentor;
 const Task = db.Task;
 
@@ -30,13 +31,30 @@ exports.deleteMentor = (id) => new Promise((resolve, reject) => {
         if (err) {
             return reject(err);
         } else {
-            return resolve(true);
+            Task.deleteMany({ mentorID: id}, function (error, response) {
+                if (error) {
+                    return reject(err);
+                }
+                return resolve(true);
+            })
         }
     });
 })
 
 exports.getMentors = () => new Promise((resolve, reject) => {
-    // Need to work on this
+    let response = [];
+    Mentor.find({}, function(err, mentors) {
+        async.eachSeries(mentors, function(mentor, cb) {
+            Task.find({mentorID: mentor._id}, function(error, tasks) {
+                let temp = JSON.parse(JSON.stringify(mentor));
+                temp['tasks'] = _.pluck(tasks, 'title');
+                response.push(temp);
+                cb();
+            });
+        }, function() {
+            return resolve(response);
+        });
+    });
 })
 
 exports.addMentorTask = (data) => new Promise((resolve, reject) => {
